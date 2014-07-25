@@ -13,8 +13,8 @@ wgslib is a RPC server with a interface to the more used geostatistics algorithm
 Users can access the wgslib algorithms using any language with support to network or via browser with Ajax and Javascript.
 
 
-Dependences
------------
+Dependencies
+------------
 
 jsonrpccpp: https://github.com/cinemast/libjson-rpc-cpp
 fftw: http://www.fftw.org/
