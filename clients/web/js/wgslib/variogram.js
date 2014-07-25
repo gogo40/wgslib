@@ -14,6 +14,14 @@ function plot(labels, data, ymin, ymax) {
             },
             points: {
                 show: true
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "'%s' of %x.1 is %y.4",
+                shifts: {
+                    x: -60,
+                    y: 25
+                }
             }
         },
         grid: {
@@ -22,14 +30,6 @@ function plot(labels, data, ymin, ymax) {
         yaxis: {
             min: ymin,
             max: ymax
-        },
-        tooltip: true,
-        tooltipOpts: {
-            content: "'%s' of %x.1 is %y.4",
-            shifts: {
-                x: -60,
-                y: 25
-            }
         }
     };
 
@@ -39,7 +39,9 @@ function plot(labels, data, ymin, ymax) {
         info.push({data: data[i], label: labels[i] });
     }
 
+     $("#variogram_plot_region").focus();
     var plotObj = $.plot($("#variogram_chart"), info, options);
+    $("#variogram_plot_region").show();
 }
 
 function get_directions(num_directions, table)
@@ -56,6 +58,11 @@ function get_directions(num_directions, table)
 
 function call_variogram(output)
 {
+    var props_selected = $("#select_props_value").val();
+
+    for (var i  = 0; i < props_selected.length; ++i) {
+        props_selected[i] = Number(props_selected[i]);
+    }
 
     var var_params = {
             'grid_name'      : $("#grid_name").val(),
@@ -67,7 +74,8 @@ function call_variogram(output)
             'dx'             : Number($("#dx").val()),
             'dy'             : Number($("#dy").val()),
             'dz'             : Number($("#dz").val()),
-            'props_selected' : $("#select_props_value").val(),
+            'props_selected' : props_selected,
+            'num_lags'       : Number($("#num_lags").val()),
             'directions'     : get_directions($("#num_directions"), $("#variogram_dirs_table"))
         };
 
@@ -76,10 +84,11 @@ function call_variogram(output)
 	$(output).text("Computing...");
 	
 	//var url = "http://wgslib.com:8080";
-	var url = "http://143.54.155.233:8080";
+	//var url = "http://143.54.155.233:8080";
+    var url = "http://localhost:8080";
 
 	var request = {};
-	request.method = "sayHello";
+	request.method = "compute_variograms";
 	request.params = {'name' : 'teste WGSLIB'};
 	request.id = 1;
 	request.jsonrpc = "2.0";
