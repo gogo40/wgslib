@@ -1,0 +1,16 @@
+/*
+WGSLIB - Web GeoStatistics Library
+URL: http://wgslib.com
+
+(c) 2014, Pericles Lopes Machado <pericles.raskolnikoff@gmail.com
+*/
+
+
+#ifndef VERSION_H_
+#define VERSION_H_
+
+#define WGSLIBSERVER_MAJOR_VERSION @MAJOR_VERSION@
+#define WGSLIBSERVER_MINOR_VERSION @MINOR_VERSION@
+
+
+#endif /* VERSION_H_ */

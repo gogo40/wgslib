@@ -19,16 +19,14 @@ class WGSLibStubClient
             delete this->client;
         }
 
-        Json::Value compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& directions, const double& dx, const double& dy, const double& dz, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected) throw (jsonrpc::JsonRpcException)
+        Json::Value compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected) throw (jsonrpc::JsonRpcException)
         {
             Json::Value p;
             p["X_prop"] = X_prop; 
 p["Y_prop"] = Y_prop; 
 p["Z_prop"] = Z_prop; 
+p["dimensions"] = dimensions; 
 p["directions"] = directions; 
-p["dx"] = dx; 
-p["dy"] = dy; 
-p["dz"] = dz; 
 p["grid_name"] = grid_name; 
 p["num_lags"] = num_lags; 
 p["props"] = props; 

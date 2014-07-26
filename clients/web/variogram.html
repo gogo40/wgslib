@@ -155,6 +155,10 @@ URL: http://wgslib.com
                     <!-- END GRID INPUT -->
 
 
+                    <!-- BEGIN VARIOGRAM CONTROL -->
+                            
+                    <!-- END VARIOGRAM CONTROL -->
+
                     <!-- BEGIN VARIOGRAM OUTPUT -->
                     <div class="panel panel-default" id="variogram_plot_region">
                         <div class="panel-heading">
@@ -163,6 +167,9 @@ URL: http://wgslib.com
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <p>
+                            <div id="variograms"></div>
+                            </p>                            
+                            <p>
                             <div class="flot-chart">
                                 <div class="flot-chart-content" id="variogram_chart"></div>
                             </div>
@@ -170,7 +177,11 @@ URL: http://wgslib.com
                         </div>
                         <!-- /.panel-body -->
                     </div>
+                    
+                            
                     <!-- END VARIOGRAM OUTPUT -->
+
+                    
 
                 </div>
             </div>
@@ -205,6 +216,9 @@ URL: http://wgslib.com
     <!-- WGSLIB INIT -->
     <input type="hidden" id="props"/>
     <input type="hidden" id="props_name"/>
+
+    <!-- WGSLIB RESULTS -->
+    <input type="hidden" id="var_output"/>
         
     <script>
     window.onload = function() {

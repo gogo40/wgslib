@@ -19,8 +19,8 @@ function plot(labels, data, ymin, ymax) {
             tooltipOpts: {
                 content: "'%s' of %x.1 is %y.4",
                 shifts: {
-                    x: -60,
-                    y: 25
+                    x: 0,
+                    y: 0
                 }
             }
         },
@@ -56,54 +56,133 @@ function get_directions(num_directions, table)
     return dirs; 
 }
 
+function print_variogram_csv()
+{
+    var props_selected = $("#select_props_value").val();
+    var props = JSON.parse($("#props_name").val());
+
+    var text = "";
+    for (var i = 0; i < props_selected.length; ++i) {
+        var prop = props[Number(props_selected[i])];
+        if (i > 0) text += " ,\t";
+        text += "\"" + prop + "\""; 
+    }
+    text += "\n";
+
+    var variog = JSON.parse($("#var_output").val());
+    var dir_variog = Number($("#id_var_direction").val());
+
+    for (var p = 0; p < variog[dir_variog][0].length; ++p) {
+        for (var i = 0; i < variog[dir_variog].length; ++i) {
+            if (i == 0) text +=  variog[dir_variog][i][p][0];
+            text += " ,\t";
+            text += variog[dir_variog][i][p][1];            
+        }
+        text += "\n";
+    }
+    $("#grid_text").text(text);
+    console.log(text);
+}
+
+function plot_this_variogram()
+{
+    var props_selected = $("#select_props_value").val();
+    var props = JSON.parse($("#props_name").val());
+
+    for (var i = 0; i < props_selected.length; ++i) {
+        props_selected[i] = props[Number(props_selected[i])];
+    }
+
+    var variog = JSON.parse($("#var_output").val());
+    var ymin = 0;
+    var ymax = 0;
+    var f = true;
+
+    var dir_variog = Number($("#id_var_direction").val());
+
+    for (var i = 0; i < variog[dir_variog].length; ++i) {
+        for (var p = 0; p < variog[dir_variog][i].length; ++p) {
+            if (f) {    
+                f = false; ymin = ymax = variog[dir_variog][i][p][1]; 
+            } else {
+                if (variog[dir_variog][i][p][1] < ymin) {
+                    ymin = variog[dir_variog][i][p][1];
+                }
+                if (variog[dir_variog][i][p][1] > ymax) {
+                    ymax = variog[dir_variog][i][p][1];
+                }
+            }  
+        }
+    }
+   
+    plot(props_selected, 
+    variog[dir_variog], 
+    ymin, ymax);
+
+    print_variogram_csv();
+}
+
+function print_variograms(props_selected, props_name, directions)
+{
+    var options = "<select id=\"id_var_direction\" onchange=\"plot_this_variogram()\">";
+    for (var i = 0; i < directions.length; ++i) {
+        options += "<option value=\""+i+"\"> ["+directions[i][0]+"|"+directions[i][1]+"|"+directions[i][2]+"]</option>";
+    }
+    options += "</select>";
+    $("#variograms").html(options);
+}
+
+
 function call_variogram(output)
 {
     var props_selected = $("#select_props_value").val();
 
-    for (var i  = 0; i < props_selected.length; ++i) {
-        props_selected[i] = Number(props_selected[i]);
+    if (props_selected === null) {
+        alert("No property selected!");        
+        return;
     }
-
-    var var_params = {
-            'grid_name'      : $("#grid_name").val(),
-            'props_name'     : JSON.parse($("#props_name").val()),
-            'props'          : JSON.parse($("#props").val()),
-            'X_prop'         : Number($("#x_prop_value").val()),
-            'Y_prop'         : Number($("#y_prop_value").val()),
-            'Z_prop'         : Number($("#z_prop_value").val()),
-            'dx'             : Number($("#dx").val()),
-            'dy'             : Number($("#dy").val()),
-            'dz'             : Number($("#dz").val()),
-            'props_selected' : props_selected,
-            'num_lags'       : Number($("#num_lags").val()),
-            'directions'     : get_directions($("#num_directions"), $("#variogram_dirs_table"))
-        };
-
-    console.log(var_params);
-
+    
 	$(output).text("Computing...");
 	
 	//var url = "http://wgslib.com:8080";
 	//var url = "http://143.54.155.233:8080";
     var url = "http://localhost:8080";
 
+    for (var i = 0; i < props_selected.length; ++i) {
+        props_selected[i] = Number(props_selected[i]);
+    }
+
 	var request = {};
+    var directions = get_directions($("#num_directions"), $("#variogram_dirs_table"));
 	request.method = "compute_variograms";
-	request.params = {'name' : 'teste WGSLIB'};
+	request.params = {
+            'X_prop'         : Number($("#x_prop_value").val()),
+            'Y_prop'         : Number($("#y_prop_value").val()),
+            'Z_prop'         : Number($("#z_prop_value").val()),
+            'directions'     : directions,
+            "dimensions"     : [Number($("#dx").val()), Number($("#dy").val()), Number($("#dz").val())],
+            'grid_name'      : $("#grid_name").val(),            
+            'num_lags'       : Number($("#num_lags").val()),
+            'props'          : JSON.parse($("#props").val()),                        
+            'props_name'     : JSON.parse($("#props_name").val()),
+            'props_selected' : props_selected
+        };
 	request.id = 1;
 	request.jsonrpc = "2.0";
 
 	function displayResult(response) {
-		console.log(response);
+        var props_selected = $("#select_props_value").val();
+        var props = JSON.parse($("#props_name").val());
 
-        plot(["var_1", "var_2", "var_3"], 
-             [ [[1, 1], [2, 2], [3, 1]],
-               [[1, 1], [2, 2], [3, 4]],
-               [[1, 4], [2, 2], [3, 6]]  ], 
-             -10, 10);
+        for (var i = 0; i < props_selected.length; ++i) {
+            props_selected[i] = props[Number(props_selected[i])];
+        }
 
 		if (response.result) {
-			$(output).text(response.result);
+            console.log(response.result);
+            print_variograms(props_selected, props, get_directions($("#num_directions"), $("#variogram_dirs_table")));
+            $("#var_output").val(JSON.stringify(response.result));
+			plot_this_variogram();        
 		} else if (response.error) {
 			alert("Error: " + response.error.message);
 		}
@@ -143,3 +222,4 @@ function update_variogram_directions(num_directions, table_output)
     table += '</div>';
     table_output.html(table);    
 }
+
