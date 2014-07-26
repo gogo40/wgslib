@@ -16,5 +16,5 @@ Users can access the wgslib algorithms using any language with support to networ
 Dependencies
 ------------
 
-jsonrpccpp: https://github.com/cinemast/libjson-rpc-cpp
-fftw: http://www.fftw.org/
+* jsonrpccpp: https://github.com/cinemast/libjson-rpc-cpp
+* fftw: http://www.fftw.org/
