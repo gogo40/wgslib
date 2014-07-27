@@ -193,20 +193,33 @@ Json::Value WGSLibStubServer::compute_variograms(const int& X_prop, const int& Y
     }
 
 
+    double vmin = 0, vmax = 0;
+    bool first = true;
     int idir = 0, iprop = 0, ivar = 0;
     for (auto var_dir: variogs) {
         iprop = 0;
         for (auto var_prop: var_dir) {
             ivar = 0;
             for (auto p: var_prop) {
-                response[idir][iprop][ivar][0u] = p.first;
-                response[idir][iprop][ivar][1u] = p.second;
+                response["data"][idir][iprop][ivar][0u] = p.first;
+                response["data"][idir][iprop][ivar][1u] = p.second;
+
+                if (first) {
+                    first = false;
+                    vmin = vmax = p.second;
+                } else {
+                    if (p.second < vmin) vmin = p.second;
+                    if (p.second > vmax) vmax = p.second;
+                }
                 ++ivar;
             }
             ++iprop;
         }
         ++idir;
     }
+
+    response["range"][0u] = vmin;
+    response["range"][1u] = vmax;
 
     return response;
 }

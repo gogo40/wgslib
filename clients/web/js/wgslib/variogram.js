@@ -72,11 +72,11 @@ function print_variogram_csv()
     var variog = JSON.parse($("#var_output").val());
     var dir_variog = Number($("#id_var_direction").val());
 
-    for (var p = 0; p < variog[dir_variog][0].length; ++p) {
-        for (var i = 0; i < variog[dir_variog].length; ++i) {
-            if (i == 0) text +=  variog[dir_variog][i][p][0];
+    for (var p = 0; p < variog['data'][dir_variog][0].length; ++p) {
+        for (var i = 0; i < variog['data'][dir_variog].length; ++i) {
+            if (i == 0) text +=  variog['data'][dir_variog][i][p][0];
             text += " ,\t";
-            text += variog[dir_variog][i][p][1];            
+            text += variog['data'][dir_variog][i][p][1];            
         }
         text += "\n";
     }
@@ -94,29 +94,15 @@ function plot_this_variogram()
     }
 
     var variog = JSON.parse($("#var_output").val());
-    var ymin = 0;
-    var ymax = 0;
+    var ymin = variog['range'][0];
+    var ymax = variog['range'][1];
     var f = true;
 
     var dir_variog = Number($("#id_var_direction").val());
 
-    for (var i = 0; i < variog[dir_variog].length; ++i) {
-        for (var p = 0; p < variog[dir_variog][i].length; ++p) {
-            if (f) {    
-                f = false; ymin = ymax = variog[dir_variog][i][p][1]; 
-            } else {
-                if (variog[dir_variog][i][p][1] < ymin) {
-                    ymin = variog[dir_variog][i][p][1];
-                }
-                if (variog[dir_variog][i][p][1] > ymax) {
-                    ymax = variog[dir_variog][i][p][1];
-                }
-            }  
-        }
-    }
    
     plot(props_selected, 
-    variog[dir_variog], 
+    variog['data'][dir_variog], 
     ymin, ymax);
 
     print_variogram_csv();
