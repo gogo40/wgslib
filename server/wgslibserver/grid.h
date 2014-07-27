@@ -8,6 +8,7 @@ URL: http://wgslib.com
 #ifndef _WGSLGRID_H_
 #define _WGSLGRID_H_
 
+#include <common.h>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -16,7 +17,7 @@ typedef std::vector<double> WSGLProperty;
 typedef std::pair<double, double> Point;
 typedef std::vector<Point> Points;
 
-class WGSLGrid {
+class WGSLIB_DECL WGSLGrid {
     public:
         WGSLGrid(int n_dims, int n_rows, int n_props);
         ~WGSLGrid();

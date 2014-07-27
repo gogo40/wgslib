@@ -22,31 +22,31 @@ Este plugin computa varmaps usando FFT.
 
 int _g_fft_n_threads = 1;
 
-void fft_set_num_threads(int n_threads)
+WGSLIB_DECL void fft_set_num_threads(int n_threads)
 {
 	_g_fft_n_threads = (n_threads > 1)? n_threads : 1;
 }
 
-int fft_get_num_threads()
+WGSLIB_DECL int fft_get_num_threads()
 {
 	return _g_fft_n_threads;
 }
 
 FFTMutex* _g_fft_mutex = 0;
 
-void set_fft_mutex(FFTMutex* mutex)
+WGSLIB_DECL void set_fft_mutex(FFTMutex* mutex)
 {
 	_g_fft_mutex = mutex;
 }
 
-void fft_lock()
+WGSLIB_DECL void fft_lock()
 {
 	if (_g_fft_mutex) {
 		_g_fft_mutex->lock();
 	}
 }
 
-void fft_unlock()
+WGSLIB_DECL void fft_unlock()
 {
 	if (_g_fft_mutex) {
 		_g_fft_mutex->unlock();
@@ -63,7 +63,7 @@ void mul_conj(fftw_complex& res, const fftw_complex& Z1, const fftw_complex& Z2)
 	res[IMAG] = b;
 }
 
-bool fft_varmap_3d(
+WGSLIB_DECL bool fft_varmap_3d(
 	VarOut& Yout, 
 	const std::vector<double>& data, 
 	const std::vector<int>& has_point, 
@@ -203,7 +203,7 @@ bool fft_varmap_3d(
 	return true;
 }
 
-bool fft_varmap_3d_declus(
+WGSLIB_DECL bool fft_varmap_3d_declus(
 	VarOut& Yout,
 	const std::vector<double>& data,
 	const std::vector<double>& weigth,
@@ -413,7 +413,7 @@ bool fft_varmap_3d_declus(
 	return true;
 }
 
-bool fft_crossvarmap_3d(
+WGSLIB_DECL bool fft_crossvarmap_3d(
 	VarOut& Yout,
 	const std::vector<double>& data1,
 	const std::vector<int>& has_point1,
@@ -582,7 +582,7 @@ bool fft_crossvarmap_3d(
 	return true;
 }
 
-bool fft_crossvarmap_3d_declus(
+WGSLIB_DECL bool fft_crossvarmap_3d_declus(
 	VarOut& Yout,
 
 	const std::vector<double>& weigth1,

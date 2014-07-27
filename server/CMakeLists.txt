@@ -15,6 +15,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 elseif(MSVC)
   set(CMAKE_CXX_FLAGS_RELEASE "/MP4")
   # customize flags for Visual Studio
+   add_definitions("-DWGSLIB_EXPORT")
 endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
@@ -40,13 +41,23 @@ install(FILES ${PROJECT_BINARY_DIR}/wgslibserver/version.h DESTINATION ${INSTALL
 
 
 find_package(FFTW REQUIRED)
+include_directories(${FFTW_INCLUDE_DIR})
+
 find_package(JSONRPC REQUIRED)
+include_directories(${JSONRPC_INCLUDE_DIR})
+
 find_package(OpenMP REQUIRED)
 if(OPENMP_FOUND)
   message("OPENMP FOUND")
-  set(CMAKE_C_FLAGS "-std=c++11 -march=native -fPIC ${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-  set(CMAKE_CXX_FLAGS "-std=c++11 -march=native -fPIC ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+  if (MSVC)
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+  else (MSVC)
+	set(CMAKE_C_FLAGS "-std=c++11 -march=native -fPIC ${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+	set(CMAKE_CXX_FLAGS "-std=c++11 -march=native -fPIC ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+  endif (MSVC)
 endif()
 
 

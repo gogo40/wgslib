@@ -12,7 +12,7 @@ URL: http://wgslib.com
 
 #include <cmath>
 
-void task_sleep(int time)
+WGSLIB_DECL void task_sleep(int time)
 {
 #ifdef  __linux
     usleep(time * 1000);

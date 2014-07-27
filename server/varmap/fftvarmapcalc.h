@@ -13,8 +13,9 @@ Este plugin computa varmaps usando FFT.
 
 
 #include <vector>
+#include <common.h>
 
-struct VarOut {
+struct WGSLIB_DECL VarOut {
 
 	VarOut()
 	: varmap(1), ni(1) {}
@@ -40,30 +41,30 @@ struct VarOut {
 	std::vector<int> ni;
 };
 
-class FFTMutex {
+class WGSLIB_DECL FFTMutex {
 public:
 	virtual void lock() = 0;
 	virtual void unlock() = 0;
 };
 
-void set_fft_mutex(FFTMutex* mutex);
-void fft_lock();
-void fft_unlock();
+WGSLIB_DECL void set_fft_mutex(FFTMutex* mutex);
+WGSLIB_DECL void fft_lock();
+WGSLIB_DECL void fft_unlock();
 
-bool fft_varmap_3d(
+WGSLIB_DECL bool fft_varmap_3d(
 	VarOut& Yout, 
 	const std::vector<double>& data, 
 	const std::vector<int>& has_point, 
 	int N, int M, int K);
 
-bool fft_varmap_3d_declus(
+WGSLIB_DECL bool fft_varmap_3d_declus(
 	VarOut& Yout,
 	const std::vector<double>& data,
 	const std::vector<double>& weigth,
 	const std::vector<int>& has_point,
 	int N, int M, int K);
 
-bool fft_crossvarmap_3d(
+WGSLIB_DECL bool fft_crossvarmap_3d(
 	VarOut& Yout, 
 	const std::vector<double>& data1,
 	const std::vector<int>& has_point1, 
@@ -71,7 +72,7 @@ bool fft_crossvarmap_3d(
 	const std::vector<int>& has_point2,
 	int N, int M, int K);
 
-bool fft_crossvarmap_3d_declus(
+WGSLIB_DECL bool fft_crossvarmap_3d_declus(
 	VarOut& Yout,
 	const std::vector<double>& weigth1,
 	const std::vector<double>& data1,
@@ -81,6 +82,6 @@ bool fft_crossvarmap_3d_declus(
 	const std::vector<int>& has_point2,
 	int N, int M, int K);
 
-void fft_set_num_threads(int n_threads);
+WGSLIB_DECL void fft_set_num_threads(int n_threads);
 
 #endif

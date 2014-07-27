@@ -8,6 +8,8 @@ URL: http://wgslib.com
 #ifndef _WGSLIBSERVER_H_
 #define _WGSLIBSERVER_H_
 
+#include <common.h>
+
 #include <jsonrpc/connectors/httpserver.h>
 #include <jsonrpc/rpc.h>
 #include <iostream>
@@ -23,9 +25,9 @@ URL: http://wgslib.com
     #include <unistd.h>
 #endif
 
-void task_sleep(int time);
+WGSLIB_DECL void task_sleep(int time);
 
-class WGSLibHttpServer : public jsonrpc::HttpServer
+class WGSLIB_DECL WGSLibHttpServer : public jsonrpc::HttpServer
 {
     public: 
         WGSLibHttpServer(int port, bool enableSpecification = true, const std::string& sslcert = "", int threads = 50);
@@ -34,7 +36,7 @@ class WGSLibHttpServer : public jsonrpc::HttpServer
                     void* addInfo = NULL);
 };
 
-class WGSLibStubServer : public AbstractWGSLibStubServer
+class WGSLIB_DECL WGSLibStubServer : public AbstractWGSLibStubServer
 {
     public:
         WGSLibStubServer();

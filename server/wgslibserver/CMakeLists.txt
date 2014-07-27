@@ -4,13 +4,16 @@ set(PROJECT_NAME wgslibserver-server)
 
 project(${PROJECT_NAME})
 
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_BINARY_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/wgslibserver)
+include_directories(${CMAKE_SOURCE_DIR})
+
+include_directories(${CMAKE_BINARY_DIR}/wgslibserver)
 
 ## File to compile
 add_library(wgslibserver-dev SHARED
     abstractwgslibstubserver.h    
     wgslibstubclient.h
+	../common.h
     
     grid.h
     grid.cpp
