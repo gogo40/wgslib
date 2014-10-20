@@ -10,8 +10,8 @@ URL: http://wgslib.com
 
 #include <common.h>
 
-#include <jsonrpc/connectors/httpserver.h>
-#include <jsonrpc/rpc.h>
+#include <jsonrpccpp/server/connectors/httpserver.h>
+#include <jsonrpccpp/server/rpcprotocolserver.h>
 #include <iostream>
 #include <atomic>
 
@@ -47,6 +47,7 @@ class WGSLIB_DECL WGSLibStubServer : public AbstractWGSLibStubServer
         bool isRunning();
     private:
         std::atomic<bool> is_running_;
+        WGSLibHttpServer http_server_;
 };
 
 #endif // _WGSLIBSERVER_H_

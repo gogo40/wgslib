@@ -24,13 +24,14 @@ add_library(wgslibserver-dev SHARED
 target_link_libraries(wgslibserver-dev
     wgslibserver-varmap	
     ${JSONRPC_LIBRARIES}
+    ${JSONCPP_LIBRARIES}
     ${FFTW_LIBRARIES}
 )
 
 INSTALL(TARGETS wgslibserver-dev DESTINATION "${INSTALL_DIR_LIB}")
 
 add_executable(wgslibserver main.cpp)
-target_link_libraries(wgslibserver wgslibserver-dev ${JSONRPC_LIBRARIES} ${FFTW_LIBRARIES})
+target_link_libraries(wgslibserver wgslibserver-dev ${JSONRPC_LIBRARIES}  ${JSONCPP_LIBRARIES} ${FFTW_LIBRARIES})
 
 INSTALL(TARGETS wgslibserver DESTINATION "${INSTALL_DIR_BIN}")
 

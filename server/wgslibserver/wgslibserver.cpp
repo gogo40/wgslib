@@ -6,9 +6,10 @@ URL: http://wgslib.com
 */
 
 //jsonrpcstub -s -c -o /Users/cinemast/Desktop spec.json MyStub
+#include "grid.h"
+
 #include "wgslibserver.h"
 #include "fftvarmapcalc.h"
-#include "grid.h"
 
 #include <cmath>
 
@@ -51,7 +52,7 @@ bool WGSLibHttpServer::SendResponse(const std::string& response, void* addInfo)
 /*RPC SERVER*/
 
 WGSLibStubServer::WGSLibStubServer() :
-    AbstractWGSLibStubServer(new WGSLibHttpServer(8080))
+    http_server_(8080), AbstractWGSLibStubServer(http_server_)
 {
     is_running_ = true;
 }

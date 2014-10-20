@@ -1,6 +1,6 @@
 [
     {
-        "method": "compute_variograms",
+        "name": "compute_variograms",
         "params": { 
             "grid_name"      : "grid_name",
             "props_name"     : ["prop_1", "prop_2", "prop_3"],
@@ -18,7 +18,7 @@
                        [[1.0, 1.0], [2.0, 2.0], [3.0, 6.0]]  ]
     },
     {
-        "notification" : "notifyServer",
+        "name" : "notifyServer",
         "params": null
     }
 ]

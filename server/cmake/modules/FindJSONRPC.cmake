@@ -42,8 +42,24 @@ if( JSONRPC_ROOT )
 
   #find libs
   find_library(
-    JSONRPC_LIB
-    NAMES "jsonrpc"
+    JSONRPC_COMMON_LIB
+    NAMES "jsonrpccpp-common"
+    PATHS ${JSONRPC_ROOT}
+    PATH_SUFFIXES "lib" "lib64"
+    NO_DEFAULT_PATH
+  )
+
+  find_library(
+    JSONRPC_CLIENT_LIB
+    NAMES "jsonrpccpp-client"
+    PATHS ${JSONRPC_ROOT}
+    PATH_SUFFIXES "lib" "lib64"
+    NO_DEFAULT_PATH
+  )
+
+  find_library(
+    JSONRPC_SERVER_LIB
+    NAMES "jsonrpccpp-server"
     PATHS ${JSONRPC_ROOT}
     PATH_SUFFIXES "lib" "lib64"
     NO_DEFAULT_PATH
@@ -53,7 +69,7 @@ if( JSONRPC_ROOT )
   #find includes
   find_path(
     JSONRPC_INCLUDES
-    NAMES "jsonrpc/rpc.h"
+    NAMES "jsonrpccpp/rpc.h"
     PATHS ${JSONRPC_ROOT}
     PATH_SUFFIXES "include"
     NO_DEFAULT_PATH
@@ -62,20 +78,32 @@ if( JSONRPC_ROOT )
 else()
 
   find_library(
-    JSONRPC_LIB
-    NAMES "jsonrpc"
-    PATHS ${PKG_FFTW_LIBRARY_DIRS} ${LIB_INSTALL_DIR}
+    JSONRPC_COMMON_LIB
+    NAMES "jsonrpccpp-common"
+    PATHS ${PKG_JSONRPCCPP_LIBRARY_DIRS} ${LIB_INSTALL_DIR}
+  )
+
+  find_library(
+    JSONRPC_CLIENT_LIB
+    NAMES "jsonrpccpp-client"
+    PATHS ${PKG_JSONRPCCPP_LIBRARY_DIRS} ${LIB_INSTALL_DIR}
+  )
+
+  find_library(
+    JSONRPC_SERVER_LIB
+    NAMES "jsonrpccpp-server"
+    PATHS ${PKG_JSONRPCCPP_LIBRARY_DIRS} ${LIB_INSTALL_DIR}
   )
 
   find_path(
     JSONRPC_INCLUDES
-    NAMES "jsonrpc/rpc.h"
-    PATHS ${PKG_FFTW_INCLUDE_DIRS} ${INCLUDE_INSTALL_DIR}
+    NAMES "jsonrpccpp/rpc.h"
+    PATHS ${PKG_JSONRPCCPP_INCLUDE_DIRS} ${INCLUDE_INSTALL_DIR}
   )
 
 endif( JSONRPC_ROOT )
 
-set(JSONRPC_LIBRARIES ${JSONRPC_LIB})
+set(JSONRPC_LIBRARIES ${JSONRPC_COMMON_LIB} ${JSONRPC_CLIENT_LIB} ${JSONRPC_SERVER_LIB})
 
 set( CMAKE_FIND_LIBRARY_SUFFIXES ${CMAKE_FIND_LIBRARY_SUFFIXES_SAV} )
 

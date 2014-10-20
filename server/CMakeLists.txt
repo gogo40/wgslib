@@ -43,8 +43,7 @@ install(FILES ${PROJECT_BINARY_DIR}/wgslibserver/version.h DESTINATION ${INSTALL
 find_package(FFTW REQUIRED)
 include_directories(${FFTW_INCLUDE_DIR})
 
-find_package(JSONRPC REQUIRED)
-include_directories(${JSONRPC_INCLUDE_DIR})
+
 
 find_package(OpenMP REQUIRED)
 if(OPENMP_FOUND)
@@ -62,6 +61,14 @@ endif()
 
 
 add_subdirectory(varmap)
+
+
+find_package(JSONRPC REQUIRED)
+include_directories(${JSONRPC_INCLUDE_DIR})
+
+find_package(JSONCPP REQUIRED)
+#include_directories(${JSONCPP_INCLUDE_DIRS})
+
 add_subdirectory(wgslibserver)
 
 
