@@ -12,13 +12,13 @@ class AbstractWGSLibStubServer : public jsonrpc::AbstractServer<AbstractWGSLibSt
     public:
         AbstractWGSLibStubServer(jsonrpc::AbstractServerConnector &conn) : jsonrpc::AbstractServer<AbstractWGSLibStubServer>(conn)
         {
-            this->bindAndAddMethod(new jsonrpc::Procedure("compute_variograms", jsonrpc::PARAMS_BY_POSITION, jsonrpc::JSON_ARRAY, "X_prop",jsonrpc::JSON_INTEGER,"Y_prop",jsonrpc::JSON_INTEGER,"Z_prop",jsonrpc::JSON_INTEGER,"dimensions",jsonrpc::JSON_ARRAY,"directions",jsonrpc::JSON_ARRAY,"grid_name",jsonrpc::JSON_STRING,"num_lags",jsonrpc::JSON_INTEGER,"props",jsonrpc::JSON_ARRAY,"props_name",jsonrpc::JSON_ARRAY,"props_selected",jsonrpc::JSON_ARRAY, NULL), &AbstractWGSLibStubServer::compute_variogramsI);
+            this->bindAndAddMethod(new jsonrpc::Procedure("compute_variograms", jsonrpc::PARAMS_BY_NAME, jsonrpc::JSON_ARRAY, "X_prop",jsonrpc::JSON_INTEGER,"Y_prop",jsonrpc::JSON_INTEGER,"Z_prop",jsonrpc::JSON_INTEGER,"dimensions",jsonrpc::JSON_ARRAY,"directions",jsonrpc::JSON_ARRAY,"grid_name",jsonrpc::JSON_STRING,"num_lags",jsonrpc::JSON_INTEGER,"props",jsonrpc::JSON_ARRAY,"props_name",jsonrpc::JSON_ARRAY,"props_selected",jsonrpc::JSON_ARRAY, NULL), &AbstractWGSLibStubServer::compute_variogramsI);
             this->bindAndAddNotification(new jsonrpc::Procedure("notifyServer", jsonrpc::PARAMS_BY_POSITION,  NULL), &AbstractWGSLibStubServer::notifyServerI);
         }
 
         inline virtual void compute_variogramsI(const Json::Value &request, Json::Value &response)
         {
-            response = this->compute_variograms(request[0u].asInt(), request[1u].asInt(), request[2u].asInt(), request[3u], request[4u], request[5u].asString(), request[6u].asInt(), request[7u], request[8u], request[9u]);
+            response = this->compute_variograms(request["X_prop"].asInt(), request["Y_prop"].asInt(), request["Z_prop"].asInt(), request["dimensions"], request["directions"], request["grid_name"].asString(), request["num_lags"].asInt(), request["props"], request["props_name"], request["props_selected"]);
         }
         inline virtual void notifyServerI(const Json::Value &request)
         {

@@ -12,6 +12,7 @@ URL: http://wgslib.com
 #include "fftvarmapcalc.h"
 
 #include <cmath>
+#include <iostream>
 
 WGSLIB_DECL void task_sleep(int time)
 {
@@ -33,26 +34,28 @@ WGSLibHttpServer::WGSLibHttpServer(int port, bool enableSpecification, const std
 
 bool WGSLibHttpServer::SendResponse(const std::string& response, void* addInfo)
 {
-	struct mg_connection* conn = (struct mg_connection*) addInfo;
-	if (mg_printf(conn, "HTTP/1.1 200 OK\r\n"
-		      "Content-Type: application/json\r\n"
-		      "Content-Length: %d\r\n"
-                      "Access-Control-Allow-Origin: *\r\n"
-		      "\r\n"
-		      "%s",(int)response.length(), response.c_str()) > 0)
-	{
-	    return true;
-	}
-	else
-	{
-	    return false;
-	}
+    struct mg_connection* conn = (struct mg_connection*) addInfo;
+    if (mg_printf(conn, "HTTP/1.1 200 OK\r\n"
+                  "Content-Type: application/json\r\n"
+                  "Content-Length: %d\r\n"
+                  "Access-Control-Allow-Origin: *\r\n"
+                  "\r\n"
+                  "%s",(int)response.length(), response.c_str()) > 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
+
+
 
 /*RPC SERVER*/
 
-WGSLibStubServer::WGSLibStubServer() :
-    http_server_(8080), AbstractWGSLibStubServer(http_server_)
+WGSLibStubServer::WGSLibStubServer(int port) :
+    http_server_(port), AbstractWGSLibStubServer(http_server_)
 {
     is_running_ = true;
 }

@@ -132,7 +132,7 @@ function call_variogram(output)
 	
 	//var url = "http://wgslib.com:8080";
 	//var url = "http://143.54.155.233:8080";
-    var url = "http://localhost:8080";
+    var url = "http://localhost:8383";
 
     for (var i = 0; i < props_selected.length; ++i) {
         props_selected[i] = Number(props_selected[i]);
@@ -157,6 +157,8 @@ function call_variogram(output)
 	request.jsonrpc = "2.0";
 
 	function displayResult(response) {
+        console.log(response);
+
         var props_selected = $("#select_props_value").val();
         var props = JSON.parse($("#props_name").val());
 

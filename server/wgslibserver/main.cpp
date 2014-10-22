@@ -9,7 +9,7 @@ URL: http://wgslib.com
 
 int main()
 {
-    WGSLibStubServer s;
+    WGSLibStubServer s(8383);
     s.StartListening();
     while(s.isRunning()) {
          task_sleep(1000);
