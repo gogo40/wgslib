@@ -54,8 +54,8 @@ bool WGSLibHttpServer::SendResponse(const std::string& response, void* addInfo)
 
 /*RPC SERVER*/
 
-WGSLibStubServer::WGSLibStubServer(int port) :
-    http_server_(port), AbstractWGSLibStubServer(http_server_)
+WGSLibStubServer::WGSLibStubServer(jsonrpc::HttpServer &server) :
+    AbstractWGSLibStubServer(server)
 {
     is_running_ = true;
 }
@@ -231,7 +231,8 @@ Json::Value WGSLibStubServer::compute_variograms(const int& X_prop, const int& Y
 
 void WGSLibStubServer::notifyServer()
 {
-    is_running_ = false;
+    //is_running_ = false;
+    std::cout << "Signal sent..\n";
 }
 
 bool WGSLibStubServer::isRunning()

@@ -9,7 +9,8 @@ URL: http://wgslib.com
 
 int main()
 {
-    WGSLibStubServer s(8383);
+    jsonrpc::HttpServer server(8383);
+    WGSLibStubServer s(server);
     s.StartListening();
     while(s.isRunning()) {
          task_sleep(1000);

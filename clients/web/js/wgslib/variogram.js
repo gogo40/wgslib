@@ -121,42 +121,37 @@ function print_variograms(props_selected, props_name, directions)
 
 function call_variogram(output)
 {
-    var props_selected = $("#select_props_value").val();
+    
+    var url = "http://localhost:8383";
+
+    var rpcclient = new WGSLibStubClient(url);
+	
+	var X_prop = Number($("#x_prop_value").val()), 
+        Y_prop = Number($("#y_prop_value").val()), 
+        Z_prop = Number($("#z_prop_value").val()), 
+        dimensions =  [Number($("#dx").val()), Number($("#dy").val()), Number($("#dz").val())], 
+        directions = get_directions($("#num_directions"), $("#variogram_dirs_table")), 
+        grid_name = $("#grid_name").val(), 
+        num_lags = Number($("#num_lags").val()), 
+        props = JSON.parse($("#props").val()), 
+        props_name = JSON.parse($("#props_name").val()), props_selected = $("#select_props_value").val();
 
     if (props_selected === null) {
         alert("No property selected!");        
         return;
     }
-    
-	$(output).text("Computing...");
-	
-	//var url = "http://wgslib.com:8080";
-	//var url = "http://143.54.155.233:8080";
-    var url = "http://localhost:8383";
 
+    $(output).text("Computing...");
     for (var i = 0; i < props_selected.length; ++i) {
         props_selected[i] = Number(props_selected[i]);
     }
 
-	var request = {};
-    var directions = get_directions($("#num_directions"), $("#variogram_dirs_table"));
-	request.method = "compute_variograms";
-	request.params = {
-            'X_prop'         : Number($("#x_prop_value").val()),
-            'Y_prop'         : Number($("#y_prop_value").val()),
-            'Z_prop'         : Number($("#z_prop_value").val()),
-            'directions'     : directions,
-            "dimensions"     : [Number($("#dx").val()), Number($("#dy").val()), Number($("#dz").val())],
-            'grid_name'      : $("#grid_name").val(),            
-            'num_lags'       : Number($("#num_lags").val()),
-            'props'          : JSON.parse($("#props").val()),                        
-            'props_name'     : JSON.parse($("#props_name").val()),
-            'props_selected' : props_selected
-        };
-	request.id = 1;
-	request.jsonrpc = "2.0";
+    function showError(code, message) {
+        alert("Error: " + code + " -> " + message);
+    }
 
-	function displayResult(response) {
+	function displayResult(id, response) {
+        console.log(id);
         console.log(response);
 
         var props_selected = $("#select_props_value").val();
@@ -166,17 +161,17 @@ function call_variogram(output)
             props_selected[i] = props[Number(props_selected[i])];
         }
 
-		if (response.result) {
-            console.log(response.result);
-            print_variograms(props_selected, props, get_directions($("#num_directions"), $("#variogram_dirs_table")));
-            $("#var_output").val(JSON.stringify(response.result));
-			plot_this_variogram();        
-		} else if (response.error) {
-			alert("Error: " + response.error.message);
-		}
+	    console.log(response);
+        print_variograms(props_selected, props, get_directions($("#num_directions"), $("#variogram_dirs_table")));
+        $("#var_output").val(JSON.stringify(response));
+		plot_this_variogram();        
 	};
 
-	$.post(url, JSON.stringify(request), displayResult, "json");
+    //rpcclient.notifyServer(showError, showError);
+	
+    rpcclient.compute_variograms(X_prop, Y_prop, Z_prop, 
+    dimensions, directions, grid_name, num_lags, props, props_name, props_selected, 
+    displayResult, showError);
 }  
 
 

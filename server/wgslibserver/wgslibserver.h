@@ -38,7 +38,7 @@ class WGSLIB_DECL WGSLibHttpServer : public jsonrpc::HttpServer
 class WGSLIB_DECL WGSLibStubServer : public AbstractWGSLibStubServer
 {
     public:
-        WGSLibStubServer(int port);
+        WGSLibStubServer(jsonrpc::HttpServer &server);
 
         virtual Json::Value compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected);
         virtual void notifyServer();
@@ -46,7 +46,6 @@ class WGSLIB_DECL WGSLibStubServer : public AbstractWGSLibStubServer
         bool isRunning();
     private:
         std::atomic<bool> is_running_;
-        jsonrpc::HttpServer http_server_;
 };
 
 #endif // _WGSLIBSERVER_H_
