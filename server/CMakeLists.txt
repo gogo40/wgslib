@@ -67,6 +67,10 @@ find_package(JSONRPC REQUIRED)
 include_directories(${JSONRPC_INCLUDE_DIR})
 
 find_package(JSONCPP REQUIRED)
+
+IF(MSVC)
+    include_directories(${JSONCPP_INCLUDE_DIRS})
+ENDIF(MSVC)
 #include_directories(${JSONCPP_INCLUDE_DIRS})
 
 add_subdirectory(wgslibserver)
