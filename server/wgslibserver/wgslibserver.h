@@ -27,20 +27,16 @@ URL: http://wgslib.com
 
 WGSLIB_DECL void task_sleep(int time);
 
-class WGSLIB_DECL WGSLibHttpServer : public jsonrpc::HttpServer
-{
-    public: 
-        WGSLibHttpServer(int port, bool enableSpecification = true, const std::string& sslcert = "", int threads = 50);
-        bool virtual SendResponse(const std::string& response,
-                void* addInfo = NULL);
-};
-
 class WGSLIB_DECL WGSLibStubServer : public AbstractWGSLibStubServer
 {
     public:
         WGSLibStubServer(jsonrpc::HttpServer &server);
 
-        virtual Json::Value compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected);
+        virtual Json::Value compute_variograms(int X_prop, int Y_prop, int Z_prop,
+                                               const Json::Value& dimensions, const Json::Value& directions,
+                                               const std::string& grid_name, int num_lags,
+                                               const Json::Value& props, const Json::Value& props_name,
+                                               const Json::Value& props_selected);
         virtual void notifyServer();
 
         bool isRunning();

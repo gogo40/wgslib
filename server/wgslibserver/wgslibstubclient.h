@@ -10,9 +10,9 @@
 class WGSLibStubClient : public jsonrpc::Client
 {
     public:
-        WGSLibStubClient(jsonrpc::AbstractClientConnector &conn) : jsonrpc::Client(conn) {}
+        WGSLibStubClient(jsonrpc::IClientConnector &conn) : jsonrpc::Client(conn) {}
 
-        Json::Value compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected) throw (jsonrpc::JsonRpcException)
+        Json::Value compute_variograms(int X_prop, int Y_prop, int Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, int num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected) throw (jsonrpc::JsonRpcException)
         {
             Json::Value p;
             p["X_prop"] = X_prop;
@@ -39,4 +39,4 @@ class WGSLibStubClient : public jsonrpc::Client
         }
 };
 
-#endif //JSONRPC_CPP_WGSLIBSTUBCLIENT_H_
+#endif //JSONRPC_CPP_STUB_WGSLIBSTUBCLIENT_H_

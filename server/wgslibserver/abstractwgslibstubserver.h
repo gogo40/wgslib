@@ -12,8 +12,8 @@ class AbstractWGSLibStubServer : public jsonrpc::AbstractServer<AbstractWGSLibSt
     public:
         AbstractWGSLibStubServer(jsonrpc::AbstractServerConnector &conn) : jsonrpc::AbstractServer<AbstractWGSLibStubServer>(conn)
         {
-            this->bindAndAddMethod(new jsonrpc::Procedure("compute_variograms", jsonrpc::PARAMS_BY_NAME, jsonrpc::JSON_ARRAY, "X_prop",jsonrpc::JSON_INTEGER,"Y_prop",jsonrpc::JSON_INTEGER,"Z_prop",jsonrpc::JSON_INTEGER,"dimensions",jsonrpc::JSON_ARRAY,"directions",jsonrpc::JSON_ARRAY,"grid_name",jsonrpc::JSON_STRING,"num_lags",jsonrpc::JSON_INTEGER,"props",jsonrpc::JSON_ARRAY,"props_name",jsonrpc::JSON_ARRAY,"props_selected",jsonrpc::JSON_ARRAY, NULL), &AbstractWGSLibStubServer::compute_variogramsI);
-            this->bindAndAddNotification(new jsonrpc::Procedure("notifyServer", jsonrpc::PARAMS_BY_NAME,  NULL), &AbstractWGSLibStubServer::notifyServerI);
+            this->bindAndAddMethod(jsonrpc::Procedure("compute_variograms", jsonrpc::PARAMS_BY_NAME, jsonrpc::JSON_ARRAY, "X_prop",jsonrpc::JSON_INTEGER,"Y_prop",jsonrpc::JSON_INTEGER,"Z_prop",jsonrpc::JSON_INTEGER,"dimensions",jsonrpc::JSON_ARRAY,"directions",jsonrpc::JSON_ARRAY,"grid_name",jsonrpc::JSON_STRING,"num_lags",jsonrpc::JSON_INTEGER,"props",jsonrpc::JSON_ARRAY,"props_name",jsonrpc::JSON_ARRAY,"props_selected",jsonrpc::JSON_ARRAY, NULL), &AbstractWGSLibStubServer::compute_variogramsI);
+            this->bindAndAddNotification(jsonrpc::Procedure("notifyServer", jsonrpc::PARAMS_BY_POSITION,  NULL), &AbstractWGSLibStubServer::notifyServerI);
         }
 
         inline virtual void compute_variogramsI(const Json::Value &request, Json::Value &response)
@@ -22,10 +22,11 @@ class AbstractWGSLibStubServer : public jsonrpc::AbstractServer<AbstractWGSLibSt
         }
         inline virtual void notifyServerI(const Json::Value &request)
         {
+            (void)request;
             this->notifyServer();
         }
-        virtual Json::Value compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected) = 0;
+        virtual Json::Value compute_variograms(int X_prop, int Y_prop, int Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, int num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected) = 0;
         virtual void notifyServer() = 0;
 };
 
-#endif //JSONRPC_CPP_ABSTRACTWGSLIBSTUBSERVER_H_
+#endif //JSONRPC_CPP_STUB_ABSTRACTWGSLIBSTUBSERVER_H_

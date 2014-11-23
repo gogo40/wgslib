@@ -25,31 +25,6 @@ WGSLIB_DECL void task_sleep(int time)
 #endif
 }
 
-/*HTTP SERVER*/
-
-WGSLibHttpServer::WGSLibHttpServer(int port, bool enableSpecification, const std::string& sslcert, int threads)
-    : HttpServer(port, enableSpecification, sslcert, threads) 
-{}
-
-
-bool WGSLibHttpServer::SendResponse(const std::string& response, void* addInfo)
-{
-    struct mg_connection* conn = (struct mg_connection*) addInfo;
-    if (mg_printf(conn, "HTTP/1.1 200 OK\r\n"
-                  "Content-Type: application/json\r\n"
-                  "Content-Length: %d\r\n"
-                  "Access-Control-Allow-Origin: *\r\n"
-                  "\r\n"
-                  "%s",(int)response.length(), response.c_str()) > 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 
 
 /*RPC SERVER*/
@@ -62,7 +37,11 @@ WGSLibStubServer::WGSLibStubServer(jsonrpc::HttpServer &server) :
 
 #define VARIOGRAM_MAX_SIZE 5000000
 
-Json::Value WGSLibStubServer::compute_variograms(const int& X_prop, const int& Y_prop, const int& Z_prop, const Json::Value& dimensions, const Json::Value& directions, const std::string& grid_name, const int& num_lags, const Json::Value& props, const Json::Value& props_name, const Json::Value& props_selected)
+Json::Value WGSLibStubServer::compute_variograms(int X_prop, int Y_prop, int Z_prop,
+                                                 const Json::Value& dimensions, const Json::Value& directions,
+                                                 const std::string& grid_name, int num_lags,
+                                                 const Json::Value& props, const Json::Value& props_name,
+                                                 const Json::Value& props_selected)
 {
     std::cout<< "Compute variogram\n";
     std::cout << "Grid_name: " << grid_name << std::endl;
