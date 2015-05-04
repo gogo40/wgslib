@@ -1,7 +1,7 @@
 wgslib - Web GeoStatistics Library
 ==================================
 
-A geostatistics library online.
+A geostatistics online library .
 
 
 Site: http://wgslib.com/
